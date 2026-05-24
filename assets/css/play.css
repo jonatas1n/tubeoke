@@ -5,6 +5,17 @@
   width: 100%;
 }
 
+.player-page .player-header__search,
+.player-page .pitch-controls {
+  transition: opacity 0.35s ease;
+}
+
+.player-page.is-idle .player-header__search,
+.player-page.is-idle .pitch-controls {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .pitch-controls {
   display: flex;
   align-items: center;

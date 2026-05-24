@@ -37,7 +37,13 @@
 
     <main class="player-stage">
       <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="{{ video_id }}"></div>
-      <audio id="audio-track" src="/stream/{{ video_id }}" preload="auto" hidden></audio>
+      <audio
+        id="audio-track"
+        src="/stream/{{ video_id }}"
+        crossorigin="anonymous"
+        preload="auto"
+        hidden
+      ></audio>
 
       <div id="loading-overlay" class="loading-overlay" role="status" aria-live="polite">
         <div class="loading-overlay__spinner" aria-hidden="true"></div>

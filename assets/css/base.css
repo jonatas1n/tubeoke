@@ -27,9 +27,15 @@ body {
   align-items: center;
   gap: 1.5rem;
   padding: 0.75rem 1.5rem;
-  background: var(--surface);
+  background: #000000;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.player-header:hover,
+.player-header:focus-within {
+  background: var(--surface);
 }
 
 .player-header__logo {

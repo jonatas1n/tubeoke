@@ -76,16 +76,9 @@ def play_video(request: Request, video_id: str):
     )
 
 
-@app.get("/stream/{video_id}", tags=["stream"])
-async def stream_audio(request: Request, video_id: str):
-    try:
-        audio_url = get_audio_stream_url(video_id)
-    except Exception as error:
-        raise HTTPException(
-            status_code=502,
-            detail="Falha ao extrair o áudio do vídeo.",
-        ) from error
-
+async def _proxy_remote_stream(
+    request: Request, source_url: str, default_content_type: str
+) -> StreamingResponse:
     upstream_headers = {}
     range_header = request.headers.get("range")
     if range_header:
@@ -95,38 +88,51 @@ async def stream_audio(request: Request, video_id: str):
 
     try:
         upstream_request = client.build_request(
-            "GET", audio_url, headers=upstream_headers
+            "GET", source_url, headers=upstream_headers
         )
         upstream_response = await client.send(upstream_request, stream=True)
     except Exception as error:
         await client.aclose()
         raise HTTPException(
             status_code=502,
-            detail="Falha ao conectar no servidor de áudio do YouTube.",
+            detail="Falha ao conectar no servidor de mídia do YouTube.",
         ) from error
 
     forwarded_headers = {
         "Accept-Ranges": "bytes",
-        "Content-Type": upstream_response.headers.get("content-type", "audio/webm"),
+        "Content-Type": upstream_response.headers.get("content-type", default_content_type),
         "Cache-Control": "no-store",
     }
     for header_name in ("content-length", "content-range"):
         if header_name in upstream_response.headers:
             forwarded_headers[header_name.title()] = upstream_response.headers[header_name]
 
-    async def audio_iterator():
+    async def iterator():
         try:
-            async for chunk in upstream_response.aiter_raw(8192):
+            async for chunk in upstream_response.aiter_raw(65536):
                 yield chunk
         finally:
             await upstream_response.aclose()
             await client.aclose()
 
     return StreamingResponse(
-        audio_iterator(),
+        iterator(),
         status_code=upstream_response.status_code,
         headers=forwarded_headers,
     )
+
+
+@app.get("/stream/{video_id}", tags=["stream"])
+async def stream_audio(request: Request, video_id: str):
+    try:
+        audio_url = get_audio_stream_url(video_id)
+    except Exception as error:
+        raise HTTPException(
+            status_code=502,
+            detail="Falha ao extrair o áudio.",
+        ) from error
+
+    return await _proxy_remote_stream(request, audio_url, "audio/webm")
 
 
 @app.get("/health", tags=["health"])

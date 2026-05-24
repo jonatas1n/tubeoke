@@ -23,13 +23,10 @@ def search_youtube_videos(query: str, max_results: int = 5):
 
         videos = []
         for item in response.get("items", []):
-            video_id = item["id"]["videoId"]
             videos.append(
                 {
+                    "id": item["id"]["videoId"],
                     "titulo": item["snippet"]["title"],
-                    "thumbnail": item["snippet"]["thumbnails"]["default"]["url"],
-                    "id": video_id,
-                    "url": f"/play/{video_id}",
                     "canal": item["snippet"]["channelTitle"],
                 }
             )

@@ -1,17 +1,60 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('assets', path='css/results.css') }}" />
+{% endblock %}
 
-<div class="container">
-  <h1>Resultados da busca</h1>
-  <ul>
-    {% for video in videos %}
-      <li>
-        <h2>{{ video.titulo }}</h2>
-        <p>{{ video.canal }}</p>
-        <a href="{{ video.url }}">Ver vídeo</a>
-      </li>
-    {% endfor %}
-  </ul>
-</div>
+{% block content %}
+  <div class="results-page">
+    <header class="player-header">
+      <a href="/" class="player-header__logo" aria-label="Voltar para a home">
+        <img src="{{ url_for('assets', path='img/logo.png') }}" alt="TubeOkê" />
+      </a>
+    </header>
+
+    <main class="results-main">
+      <form class="player-header__search" action="/search" method="get" role="search">
+        Buscar: 
+        <input
+          type="search"
+          name="q"
+          placeholder="Buscar mais vídeos..."
+          aria-label="Buscar vídeos"
+          value="{{ q }}"
+          required
+        />
+      </form>
+
+      <header class="results-header">
+        <p class="results-header__count">
+          Exibindo {{ videos|length }} {% if videos|length == 1 %}vídeo encontrado{% else %}vídeos encontrados{% endif %}
+        </p>
+      </header>
+
+      {% if videos %}
+        <ul class="video-grid">
+          {% for video in videos %}
+            <li class="video-card">
+              <a href="/play/{{ video.id }}" class="video-card__link">
+                <div class="video-card__thumbnail">
+                  <img
+                    src="https://i.ytimg.com/vi/{{ video.id }}/hqdefault.jpg"
+                    alt=""
+                    loading="lazy"
+                  />
+                  <span class="video-card__play-icon" aria-hidden="true">▶</span>
+                </div>
+                <div class="video-card__body">
+                  <h2 class="video-card__title">{{ video.titulo }}</h2>
+                  <p class="video-card__channel">{{ video.canal }}</p>
+                </div>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="results-empty">Nenhum vídeo encontrado.</p>
+      {% endif %}
+    </main>
+  </div>
 {% endblock %}

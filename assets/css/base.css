@@ -1,0 +1,94 @@
+@import url("variables.css");
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1400px;
+  width: 80%;
+  margin-inline: auto;
+}
+
+/* ===================== App header (shared: play + results) ===================== */
+
+.player-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.player-header__logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.player-header__logo:hover {
+  opacity: 0.85;
+}
+
+.player-header__logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+.player-header__search {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 800;
+
+  input {
+    font-weight: 500;
+    width: 100%;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.95rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &::placeholder {
+      color: var(--muted);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 0, 51, 0.2);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .player-header {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .player-header__search {
+    order: 3;
+    flex-basis: 100%;
+  }
+}

@@ -63,7 +63,7 @@ def search_videos(
     return templates.TemplateResponse(
         request,
         "results.html",
-        {"videos": videos},
+        {"videos": videos, "q": q},
     )
 
 

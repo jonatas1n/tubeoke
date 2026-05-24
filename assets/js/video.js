@@ -17,6 +17,18 @@ const AUDIO_READY_TIMEOUT_MS = 30000;
 
 const FIRST_GESTURE_EVENTS = ["pointerdown", "keydown", "touchstart"];
 
+const PLYR_CONTROLS = [
+  "play-large",
+  "play",
+  "progress",
+  "current-time",
+  "duration",
+  "settings",
+  "pip",
+  "airplay",
+  "fullscreen",
+];
+
 const formatPitchLabel = (semitones) => {
   if (semitones === 0) return "Tom Original";
   if (semitones > 0) return `+${semitones} Semitons`;
@@ -86,7 +98,7 @@ const waitForAudioSeeked = (audio) =>
   });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const player = new Plyr(PLAYER_SELECTOR);
+  const player = new Plyr(PLAYER_SELECTOR, { controls: PLYR_CONTROLS });
   const audioElement = document.getElementById(AUDIO_TRACK_ID);
   const loadingOverlay = document.getElementById(LOADING_OVERLAY_ID);
   const loadingMessage = document.getElementById(LOADING_MESSAGE_ID);

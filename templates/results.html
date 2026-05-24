@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <h1>Resultados da busca</h1>
+  <ul>
+    {% for video in videos %}
+      <li>
+        <h2>{{ video.titulo }}</h2>
+        <p>{{ video.canal }}</p>
+        <a href="{{ video.url }}">Ver vídeo</a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <main class="home-page">
+    <div class="home-page__content">
+      <span class="home-page__eyebrow">Karaokê online</span>
+      <h1 class="home-page__title">
+        <img
+          src="{{ url_for('assets', path='img/logo.png') }}"
+          alt="TubeOkê"
+          class="home-page__logo"
+        />
+      </h1>
+      <p class="home-page__tagline">Sua voz, seu tom, sua música.</p>
+
+      <form class="home-search" action="/search" method="get" role="search">
+        <input
+          class="home-search__input"
+          type="search"
+          name="q"
+          placeholder="Digite o nome da música ou artista"
+          aria-label="Buscar música"
+          autocomplete="off"
+          autofocus
+          required
+        />
+        <button type="submit" class="home-search__button">Buscar</button>
+      </form>
+    </div>
+  </main>
+{% endblock %}

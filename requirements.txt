@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+jinja2
+httpx
+yt-dlp
+requests
+google-api-python-client
+python-dotenv

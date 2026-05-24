@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="player-page">
+    <header class="player-header">
+      <a href="/" class="player-header__logo" aria-label="Voltar para a home">
+        <img src="{{ url_for('assets', path='img/logo.png') }}" alt="TubeOkê" />
+      </a>
+
+      <form class="player-header__search" action="/search" method="get" role="search">
+        <input
+          type="search"
+          name="q"
+          placeholder="Buscar mais vídeos..."
+          aria-label="Buscar vídeos"
+          required
+        />
+      </form>
+
+      <div class="pitch-controls" role="group" aria-label="Controles de tom">
+        <button id="pitch-down" type="button" class="pitch-controls__button">
+          Reduzir Tom
+        </button>
+        <span id="pitch-label" class="pitch-controls__label" aria-live="polite">
+          Tom Original
+        </span>
+        <button id="pitch-up" type="button" class="pitch-controls__button">
+          Aumentar Tom
+        </button>
+      </div>
+    </header>
+
+    <main class="player-stage">
+      <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="{{ video_id }}"></div>
+      <audio id="audio-track" src="/stream/{{ video_id }}" preload="auto" hidden></audio>
+
+      <div id="loading-overlay" class="loading-overlay" role="status" aria-live="polite">
+        <div class="loading-overlay__spinner" aria-hidden="true"></div>
+        <p class="loading-overlay__message" id="loading-message">Sincronizando áudio...</p>
+        <button type="button" class="loading-overlay__retry" id="loading-retry" hidden>
+          Tentar novamente
+        </button>
+      </div>
+    </main>
+  </div>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <script src="{{ url_for('assets', path='js/video.js') }}"></script>
+{% endblock %}

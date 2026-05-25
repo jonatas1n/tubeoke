@@ -23,6 +23,18 @@ const SEEK_ALIGN_THRESHOLD_SECONDS = 0.05;
 
 const FIRST_GESTURE_EVENTS = ["pointerdown", "keydown", "touchstart"];
 
+const PLYR_CONTROLS = [
+  "play-large",
+  "play",
+  "progress",
+  "current-time",
+  "duration",
+  "settings",
+  "pip",
+  "airplay",
+  "fullscreen",
+];
+
 const PLAYER_PAGE_SELECTOR = ".player-page";
 const PLAYER_HEADER_SELECTOR = ".player-header";
 const HEADER_IDLE_CLASS = "is-idle";
@@ -127,7 +139,7 @@ const setupHeaderAutoHide = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  const player = new Plyr(PLAYER_SELECTOR);
+  const player = new Plyr(PLAYER_SELECTOR, { controls: PLYR_CONTROLS });
   const audioElement = document.getElementById(AUDIO_TRACK_ID);
   const loadingOverlay = document.getElementById(LOADING_OVERLAY_ID);
   const loadingMessage = document.getElementById(LOADING_MESSAGE_ID);

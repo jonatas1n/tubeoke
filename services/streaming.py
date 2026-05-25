@@ -1,8 +1,11 @@
+import logging
 import os
 import time
 from typing import Any, Optional
 
 from yt_dlp import YoutubeDL
+
+logger = logging.getLogger(__name__)
 
 _URL_CACHE_TTL_SECONDS = 60 * 30
 _url_cache: dict[str, tuple[str, float]] = {}
@@ -90,8 +93,8 @@ def _extract_audio_url(video_id: str) -> str:
     try:
         with YoutubeDL(_build_ydl_options()) as ydl:
             info = ydl.extract_info(youtube_url, download=False)
-    except Exception as error:
-        print(f"Falha ao extrair áudio para {video_id}: {error}")
+    except Exception:
+        logger.exception("Falha ao extrair áudio para video_id=%s", video_id)
         raise
 
     formats = info.get("formats") or []
